@@ -21,11 +21,6 @@ jobs:
         with:
           node-version: 22
 
-      - name: test
-        run: |
-          echo 'Ttste:  '
-          echo ${{ secrets.TEST_ENV }}
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -33,8 +28,8 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Run npm install
-        run: npm run install
+      - name: Install all node dependencies
+        run: npm install
 
       - name: Deploy the infra to cloud
         uses: pulumi/actions@v6
