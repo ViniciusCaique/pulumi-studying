@@ -9,6 +9,6 @@ on:
 
 jobs:
   deploy: 
-    - uses: ./.github/workflows/pulumi.yml
+    uses: ./.github/workflows/pulumi.yml
     # with:
     #   destroy: false
