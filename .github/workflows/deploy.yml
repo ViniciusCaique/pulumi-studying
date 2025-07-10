@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  pulumi: 
-    uses: ./.github/workflows/pulumi.yml
-    with:
-      destroy: false
+  deploy: 
+    - uses: ./.github/workflows/pulumi.yml
+    # with:
+    #   destroy: false
