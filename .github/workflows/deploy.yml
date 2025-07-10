@@ -3,6 +3,7 @@
 name: 'Deploy to AWS'
 
 on:
+  workflow_dispacth:
   push:
     branches: 
       - main
