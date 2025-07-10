@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: 22
 
+      - name: test
+        run: |
+          echo 'Ttste:  '
+          echo ${{ secrets.TEST_ENV }}
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

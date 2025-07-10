@@ -14,9 +14,6 @@ permissions:
 
 jobs:
   deploy:
-    run: |
-      echo 'Ttste:  '
-      echo ${{ secrets.TEST_ENV }}
     uses: ./.github/workflows/pulumi.yml
     secrets: inherit
     # with:
