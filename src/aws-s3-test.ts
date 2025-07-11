@@ -43,15 +43,20 @@ export class AwsS3Test extends pulumi.ComponentResource {
     //   parent: this
     // })
 
-    // const publicPolicies = new aws.s3.BucketPublicAccessBlock("test_disable_block_public_access", {
-    //   bucket: bucket.id,
-    //   blockPublicAcls: false,
-    //   blockPublicPolicy: false,
-    //   ignorePublicAcls: false,
-    //   restrictPublicBuckets: false
-    // }, {
-    //   parent: this
-    // })
+    const publicPolicies = new aws.s3.BucketPublicAccessBlock("test-disable-block-public-access", {
+      bucket: bucket.id,
+      blockPublicAcls: false,
+      blockPublicPolicy: false,
+      ignorePublicAcls: false,
+      restrictPublicBuckets: false
+    }, {
+      parent: this,
+      aliases: [
+        { 
+          name: "test-s3-test_disable_block_public_access"
+        }
+      ]
+    })
 
     // const policiesS3 = new aws.s3.BucketPolicy("test_policy", {
     //   bucket: bucket.id,
