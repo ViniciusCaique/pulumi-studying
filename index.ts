@@ -28,10 +28,20 @@ const allowExternalAccess = aws.iam.getPolicyDocumentOutput({
   }]
 })
 
-new aws.s3.BucketPolicy("test_policy", {
+const publicPolicies = new aws.s3.BucketPublicAccessBlock("test_disable_block_public_access", {
+  bucket: bucket.id,
+  blockPublicAcls: false,
+  blockPublicPolicy: false,
+  ignorePublicAcls: false,
+  restrictPublicBuckets: false
+})
+
+const policiesS3 = new aws.s3.BucketPolicy("test_policy", {
   bucket: bucket.id,
   policy: allowExternalAccess.apply(allowExternalAccess => allowExternalAccess.json)
 })
 
 // Export the name of the bucket
 export const bucketName = bucket.id;
+export const bucketPolicies = policiesS3.id
+export const bucketBlockPublicAccess = publicPolicies.id
