@@ -9,7 +9,7 @@ export class AwsS3Test extends pulumi.ComponentResource {
     super("quickstart:index:s3", name, _, opts);
 
     // Create an AWS resource (S3 Bucket)
-    const bucket = new aws.s3.BucketV2("test-s3-bucket", {
+    const bucket = new aws.s3.BucketV2(`${name}-test-s3-bucket`, {
       bucket: "test-something-cool-1",
       forceDestroy: false,
       tags: {
@@ -25,32 +25,32 @@ export class AwsS3Test extends pulumi.ComponentResource {
       ]
     });
 
-    // const allowExternalAccess = aws.iam.getPolicyDocumentOutput({
-    //   statements: [{
-    //     principals: [{
-    //       type: "AWS",
-    //       identifiers: ["test-identifier"],
-    //     }],
-    //     actions: [
-    //       "s3:GetObject",
-    //     ],
-    //     resources: [
-    //       bucket.arn,
-    //       pulumi.interpolate`${bucket.arn}/*`
-    //     ]
-    //   }]
-    // }, {
-    //   parent: this
-    // })
+    const allowExternalAccess = aws.iam.getPolicyDocumentOutput({
+      statements: [{
+        principals: [{
+          type: "AWS",
+          identifiers: ["*"],
+        }],
+        actions: [
+          "s3:GetObject",
+        ],
+        resources: [
+          bucket.arn,
+          pulumi.interpolate`${bucket.arn}/*`
+        ]
+      }]
+    }, {
+      parent: bucket
+    })
 
-    const publicPolicies = new aws.s3.BucketPublicAccessBlock("test-disable-block-public-access", {
+    const publicPolicies = new aws.s3.BucketPublicAccessBlock(`${name}-test-disable-block-public-access`, {
       bucket: bucket.id,
       blockPublicAcls: false,
       blockPublicPolicy: false,
       ignorePublicAcls: false,
       restrictPublicBuckets: false
     }, {
-      parent: this,
+      parent: bucket,
       aliases: [
         { 
           name: "test-s3-test_disable_block_public_access"
@@ -58,12 +58,12 @@ export class AwsS3Test extends pulumi.ComponentResource {
       ]
     })
 
-    // const policiesS3 = new aws.s3.BucketPolicy("test_policy", {
-    //   bucket: bucket.id,
-    //   policy: allowExternalAccess.apply(allowExternalAccess => allowExternalAccess.json)
-    // }, {
-    //   parent: this
-    // })
+    const policiesS3 = new aws.s3.BucketPolicy(`${name}-test-policy`, {
+      bucket: bucket.id,
+      policy: allowExternalAccess.apply(allowExternalAccess => allowExternalAccess.json)
+    }, {
+      parent: bucket
+    })
 
     this.bucketId = bucket.id
 
