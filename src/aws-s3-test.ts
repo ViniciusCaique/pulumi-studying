@@ -10,14 +10,19 @@ export class AwsS3Test extends pulumi.ComponentResource {
 
     // Create an AWS resource (S3 Bucket)
     const bucket = new aws.s3.BucketV2("test-s3-bucket", {
-      bucket: "test-something-cool",
+      bucket: "test-something-cool-1",
       forceDestroy: false,
       tags: {
         Name: "test",
         Environment: "dev"
       }
     }, {
-      parent: this
+      parent: this,
+      aliases: [
+        { 
+          name: "test-s3-bucket"
+        }
+      ]
     });
 
     // const allowExternalAccess = aws.iam.getPolicyDocumentOutput({
